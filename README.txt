@@ -1,23 +1,41 @@
-TELEGRAM WORK TRACKER BOT — ENGLISH VERSION
+# Telegram Work Tracker — English
+
+This version is designed for a free Render Web Service plus a GitHub Actions scheduled job.
 
 Features:
-- English buttons and messages
-- Worked Today
-- Didn't Work Today
-- Today's Status
-- Weekly Report
-- Monthly Report
-- Sunday is automatically treated as the weekly day off
-- Weekly report is sent every Saturday at 21:00 Asia/Bishkek time
-- Data is stored in work_data.json
-- Optional restriction to your Telegram user ID
+- All buttons and messages are English.
+- Monday–Saturday are working days.
+- Sunday is automatically treated as the weekly day off.
+- Record Worked / Didn't Work for each date.
+- Today's Status, Weekly Report, and Monthly Report.
+- GitHub Actions requests the weekly report endpoint every Saturday at 21:00 Bishkek time (15:00 UTC).
 
-Setup:
-1. Install Python 3.10+.
-2. Run: pip install -r requirements.txt
-3. Create a bot using Telegram @BotFather.
-4. Set BOT_TOKEN to your bot token.
-5. Set ALLOWED_USER_ID to your numeric Telegram user ID.
-6. Run: python bot.py
+## Render settings
 
-Never publish your bot token.
+Create a **Web Service** from this repository.
+
+Build Command:
+`pip install -r requirements.txt`
+
+Start Command:
+`python bot.py`
+
+Environment Variables:
+- `BOT_TOKEN` = your BotFather token
+- `ALLOWED_USER_ID` = `7437428206`
+- `WEBHOOK_SECRET` = create a random secret string
+
+After deployment, copy your Render service URL and set Telegram's webhook:
+
+`https://api.telegram.org/botYOUR_TOKEN/setWebhook?url=https://YOUR-RENDER-URL/telegram/webhook&secret_token=YOUR_SECRET`
+
+Do not put the Bot Token in GitHub files.
+
+## GitHub Actions secrets
+
+In repository Settings → Secrets and variables → Actions, add:
+- `REPORT_URL` = `https://YOUR-RENDER-URL/send-weekly-report`
+- `WEBHOOK_SECRET` = same secret used in Render
+
+Important:
+Render's free filesystem is not guaranteed to persist across restarts/redeploys. For permanent historical records, a persistent database/storage should be added later.
